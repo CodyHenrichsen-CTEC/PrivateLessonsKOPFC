@@ -1,0 +1,101 @@
+@charset "UTF-8";
+/* CSS Document */
+/*
+Stuff from the page
+steelblue
+
+
+
+*/
+
+#content
+{
+padding-left:50px;
+background:#99ccff;	
+}
+
+#header
+{
+	width:auto;	
+	position:fixed;
+	top:0;
+
+}
+#logo
+{
+	float:left;
+}
+
+#file
+{
+	float:left;
+}
+
+#navbar
+{
+	width:auto;
+	float:left;
+    padding: 0;
+    margin: 0 0 -10em 0;
+	background-color: #f2f2f2;
+	border-bottom: 1px solid #ccc; 
+	border-top: 5px solid #ccc;
+}
+
+#navbar ul
+{
+	list-style: none; /* Remove list bullets */
+	display: inline;
+}
+
+#navbar li 
+{
+	display: inline;
+}
+#navbar li a 
+{
+	display: block;
+	padding: 15px 25px;
+	text-decoration: none;
+	font-weight: bold;
+	color: #069;
+	border-right: 5px solid #ccc;
+}
+
+#navbar li a:hover {
+		color: #c00;
+		background-color: #fff; }
+
+ul 
+{
+    list-style: none; /* Remove list bullets */
+    padding: 0;
+    margin: 0;
+}
+
+li 
+{ 
+    /*padding-left: 16px;*/
+	list-style-position: inside;
+    text-indent: -1em;
+    padding-left: 3em;
+}
+
+li:before 
+{
+    padding-right: 8px;
+    
+}
+#navbar
+{
+	float:left;
+}
+#content
+{
+	width:auto;
+	float:left;
+	clear:leftl
+	margin: 10em;
+	padding-top:30em;
+}
+

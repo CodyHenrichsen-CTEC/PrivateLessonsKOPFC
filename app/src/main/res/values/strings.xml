@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">KOPFC Private Lessons</string>
+    <string name="hidden">From K and C Henrichsen</string>
+
+    <string name="title_activity_schedule">ScheduleActivity</string>
+    <string name="title_activity_bios">BiosActivity</string>
+    <string name="title_activity_drills">DrillsActivity</string>
+    <string name="title_activity_classes">ClassesActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="contact">Contact Instructors</string>
+    <string name="schedule">Lesson Schedules</string>
+    <string name="bios">Instructor Bios</string>
+    <string name="drills">Stroke Practice Drills</string>
+    <string name="payment">Make a Payment</string>
+    <string name="entry_skills">Skills needed for Entry</string>
+
+    <string name="schedB">Schedule</string>
+    <string name="classB">Classes</string>
+    <string name="drillB">Drills</string>
+    <string name="biosB">Instructor Bios</string>
+    <string name="paysB">Payment</string>
+
+    <string name="flyStroke">Butterfly</string>
+    <string name="freeStroke">Freestyle</string>
+    <string name="backStroke">Backstroke</string>
+    <string name="breastStroke">Breaststroke</string>
+    <string name="morn">Morning Lessons</string>
+    <string name="after">Afternoon Lessons</string>
+    <string name="weekend">Saturday Lessons</string>
+    <string name="reminder">Remember, you need to contact the instructor before you pay for the lessons</string>
+
+    <string name="navSched">Schedule</string>
+    <string name="navClasses">Classes</string>
+    <string name="navDrills">Drills</string>
+    <string name="navBios">Instructor Bios</string>
+    <string name="navPay">Payment</string>
+
+    <string-array name="lessonAppArray">
+        <item>Schedule</item>
+        <item>Classes</item>
+        <item>Drills</item>
+        <item>Instructor Bios</item>
+        <item>Payment</item>
+    </string-array>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
