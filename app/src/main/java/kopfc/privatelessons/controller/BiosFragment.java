@@ -1,5 +1,6 @@
 package kopfc.privatelessons.controller;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.net.Uri;
@@ -182,8 +183,8 @@ public class BiosFragment extends Fragment
 
     private void loadListToView()
     {
-        ArrayAdapter<Instructor> biosAdapter = new ArrayAdapter<Instructor>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, instructorList);
-        instructorListView = (ListView) getActivity().findViewById(R.id.instructorListView);
+        InstructorAdapter biosAdapter = new InstructorAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, instructorList);
+
         instructorListView.setAdapter(biosAdapter);
     }
 
@@ -193,6 +194,8 @@ public class BiosFragment extends Fragment
                              Bundle savedInstanceState)
     {
         instructorList = new ArrayList<Instructor>();
+        View returnedView = inflater.inflate(R.layout.fragment_bios, container, false);
+        instructorListView = (ListView) returnedView.findViewById(R.id.instructorListView);
         //check if external data exists
         if(false)
         {
@@ -207,7 +210,7 @@ public class BiosFragment extends Fragment
         }
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_bios, container, false);
+        return returnedView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

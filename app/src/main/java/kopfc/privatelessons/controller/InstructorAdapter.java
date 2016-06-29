@@ -19,10 +19,12 @@ import kopfc.privatelessons.model.Instructor;
 public class InstructorAdapter extends ArrayAdapter<Instructor>
 {
     private int resourceId;
+    private LayoutInflater inflater;
     public InstructorAdapter(Context context, int textViewResourceId, List<Instructor> objects)
     {
         super(context,  textViewResourceId, objects);
         resourceId = textViewResourceId;
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public static class InstructorHolder
@@ -54,39 +56,61 @@ public class InstructorAdapter extends ArrayAdapter<Instructor>
     {
         try
         {
-            View listItemView = convertView;
+
+            View instructorRowItem = inflater.inflate(R.layout.instructor_row_view, null);
             final InstructorHolder currentHolder;
+
+
+
             Instructor current = getItem(position);
             String name = current.getName().replaceAll("\\s","");
-            if(convertView == null)
+
+            currentHolder = new InstructorHolder();
+            currentHolder.nameView = (TextView) instructorRowItem.findViewById(R.id.instructor_name_text);
+            currentHolder.bioView = (TextView) instructorRowItem.findViewById(R.id.instructor_bio_text);
+            currentHolder.instructorImage = (ImageView) instructorRowItem.findViewById(R.id.instructor_image);
+
+            currentHolder.nameView.setText(current.getName());
+            currentHolder.bioView.setText(current.getBiography());
+            int instructorImageResource = getContext().getResources().getIdentifier(name, "drawable", getContext().getPackageName());
+            if(instructorImageResource != 0)
             {
-                LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                listItemView = inflater.inflate(R.layout.sample_instructor_view, null);
-
-                currentHolder = new InstructorHolder();
-                currentHolder.nameView = (TextView) listItemView.findViewById(R.id.display_name);
-                currentHolder.bioView = (TextView) listItemView.findViewById(R.id.display_bio);
-                currentHolder.instructorImage = (ImageView) listItemView.findViewById(R.id.display_image);
-
-                int instructorImageResource = getContext().getResources().getIdentifier(name, "drawable", getContext().getPackageName());
-                if(instructorImageResource != 0)
-                {
-                    currentHolder.instructorImage.setImageResource(instructorImageResource);
-                }
-                else
-                {
-                    currentHolder.instructorImage.setImageResource(R.drawable.noname);
-                }
-
-                listItemView.setTag(currentHolder);
+                currentHolder.instructorImage.setImageResource(instructorImageResource);
             }
             else
             {
-                currentHolder = (InstructorHolder) listItemView.getTag();
-                listItemView = convertView;
+                currentHolder.instructorImage.setImageResource(R.drawable.noname);
             }
 
-            return listItemView;
+//            if(convertView == null)
+//            {
+//                LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//                instructorRowItem = inflater.inflate(R.layout.instructor_row_view, null);
+//
+//                currentHolder = new InstructorHolder();
+//                currentHolder.nameView = (TextView) instructorRowItem.findViewById(R.id.instructor_name_text);
+//                currentHolder.bioView = (TextView) instructorRowItem.findViewById(R.id.instructor_bio_text);
+//                currentHolder.instructorImage = (ImageView) instructorRowItem.findViewById(R.id.instructor_image);
+//
+//                int instructorImageResource = getContext().getResources().getIdentifier(name, "drawable", getContext().getPackageName());
+//                if(instructorImageResource != 0)
+//                {
+//                    currentHolder.instructorImage.setImageResource(instructorImageResource);
+//                }
+//                else
+//                {
+//                    currentHolder.instructorImage.setImageResource(R.drawable.noname);
+//                }
+//
+//                instructorRowItem.setTag(currentHolder);
+//            }
+//            else
+//            {
+//                currentHolder = (InstructorHolder) instructorRowItem.getTag();
+//                instructorRowItem = convertView;
+//            }
+
+            return instructorRowItem;
 
 
         }
