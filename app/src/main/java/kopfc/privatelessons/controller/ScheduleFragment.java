@@ -88,10 +88,11 @@ public class ScheduleFragment extends Fragment
         scheduleView.loadUrl(derp);
 
         Resources systemResources = getResources();
-        float fontSize = systemResources.getDimension(R.dimen.textSize);
+//        float fontSize = systemResources.getDimension(R.dimen.textSize);
+//
+//        scheduleView.getSettings().setDefaultFontSize((int) fontSize);
 
-        scheduleView.getSettings().setDefaultFontSize((int) fontSize);
-
+        scheduleView.getSettings().setTextZoom(300);
         scheduleView.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent event) {

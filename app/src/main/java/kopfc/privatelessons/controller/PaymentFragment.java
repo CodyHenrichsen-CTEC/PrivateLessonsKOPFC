@@ -2,6 +2,7 @@ package kopfc.privatelessons.controller;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -80,16 +81,22 @@ public class PaymentFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
+        String urlKOPFC = "https://www.activityreg.com/ClientPage_t1.wcs?clientid=KOPFC&siteid=1";
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(urlKOPFC));
+        startActivity(intent);
+
         View baseView = inflater.inflate(R.layout.fragment_payment, null);
         paymentView = (WebView) baseView.findViewById(R.id.paymentWebView);
         loadDialog = ProgressDialog.show(baseView.getContext(), "Loading Payment","Please wait...", true);
         loadDialog.setCancelable(false);
-        String urlKOPFC = "https://www.activityreg.com/ClientPage_t1.wcs?clientid=KOPFC&siteid=1";
+
 
         paymentView.getSettings().setLoadWithOverviewMode(true);
         paymentView.getSettings().setUseWideViewPort(true);
         paymentView.setWebViewClient(new PaymentViewClient());
         paymentView.loadUrl(urlKOPFC);
+        paymentView.getSettings().setTextZoom(200);
         paymentView.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent event) {
