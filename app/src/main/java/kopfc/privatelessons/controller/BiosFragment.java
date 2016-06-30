@@ -2,6 +2,7 @@ package kopfc.privatelessons.controller;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,8 +10,15 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -44,7 +52,13 @@ public class BiosFragment extends Fragment
     private OnFragmentInteractionListener mListener;
 
     private ArrayList<Instructor> instructorList;
+    private ArrayList<Instructor> filteredList;
+    private InstructorAdapter biosAdapter;
     private ListView instructorListView;
+    private RadioGroup timeGroup, dayGroup, strokeGroup;
+
+    private Button clearSelectionButton;
+    private boolean clicked;
 
     public BiosFragment()
     {
@@ -81,7 +95,7 @@ public class BiosFragment extends Fragment
         }
     }
 
-    private String openBiosFile()
+    private void openBiosFile()
     {
         //Open instructor.csv
         AssetManager instructorFileManager = getActivity().getApplicationContext().getResources().getAssets();
@@ -139,7 +153,7 @@ public class BiosFragment extends Fragment
             fileAsString = "failed to read";
         }
         //parse to list
-        return  fileAsString;
+
     }
 
     private void convertBiosToList(String biosFile)
@@ -181,11 +195,11 @@ public class BiosFragment extends Fragment
         }
     }
 
-    private void loadListToView()
+    private void loadListToView(ArrayList<Instructor> currentList)
     {
-        InstructorAdapter biosAdapter = new InstructorAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, instructorList);
-
+        biosAdapter = new InstructorAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, currentList);
         instructorListView.setAdapter(biosAdapter);
+        biosAdapter.notifyDataSetChanged();
     }
 
 
@@ -194,8 +208,13 @@ public class BiosFragment extends Fragment
                              Bundle savedInstanceState)
     {
         instructorList = new ArrayList<Instructor>();
+        clicked = false;
         View returnedView = inflater.inflate(R.layout.fragment_bios, container, false);
         instructorListView = (ListView) returnedView.findViewById(R.id.instructorListView);
+        timeGroup = (RadioGroup) returnedView.findViewById(R.id.time_menu);
+        clearSelectionButton = (Button) returnedView.findViewById(R.id.clearSelectionButton);
+        dayGroup = (RadioGroup) returnedView.findViewById(R.id.day_menu);
+        strokeGroup = (RadioGroup) returnedView.findViewById(R.id.stroke_menu);
         //check if external data exists
         if(false)
         {
@@ -203,14 +222,210 @@ public class BiosFragment extends Fragment
         }
         else
         {
-            String biosFile = openBiosFile();
-           // convertBiosToList(biosFile);
-            loadListToView();
-            //TODO: Filters by avail, gender, time
+            openBiosFile();
+            loadListToView(instructorList);
         }
+
+        setupListeners();
 
         // Inflate the layout for this fragment
         return returnedView;
+    }
+
+    private void composeEmail(String[] addresses, String subject) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
+    private void setupListeners()
+    {
+        instructorListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+        {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                String [] address = {instructorList.get(position).getEmail()};
+                String subject = "I would like to arrange a private lesson ...";
+                composeEmail(address, subject);
+
+                return false;
+            }
+        });
+
+        instructorListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                TextView bioView = (TextView) view.findViewById(R.id.instructor_bio_text);
+                if(clicked)
+                {
+                    bioView.setMaxLines(1);
+                }
+                else
+                {
+                    bioView.setMaxLines(5);
+                }
+                clicked = !clicked;
+
+            }
+        });
+
+        timeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId)
+            {
+                    filteredList = new ArrayList<Instructor>();
+
+
+                if(checkedId == R.id.am_box)
+                {
+                    for(Instructor current : instructorList)
+                    {
+                        if(current.getAvailability()[0])
+                        {
+                            filteredList.add(current);
+                        }
+                    }
+
+                    loadListToView(filteredList);
+
+                }
+                else if(checkedId == R.id.pm_box)
+                {
+                    for(Instructor current : instructorList)
+                    {
+                        if(current.getAvailability()[1])
+                        {
+                            filteredList.add(current);
+                        }
+                    }
+                }
+                else
+                {
+                    loadListToView(instructorList);
+                }
+
+            }
+        });
+
+        dayGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId)
+            {
+                    filteredList = new ArrayList<Instructor>();
+
+                if(checkedId == R.id.weekday_radio)
+                {
+                    for(Instructor current : instructorList)
+                    {
+                        for (int dayIndex = 0; dayIndex < 10; dayIndex++)
+                        {
+                            if (current.getAvailability()[dayIndex])
+                            {
+                                filteredList.add(current);
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if(checkedId == R.id.saturday_radio)
+                {
+                    for(Instructor current : instructorList)
+                    {
+                        for (int dayIndex = 10; dayIndex < 12; dayIndex++)
+                        {
+                            if (current.getAvailability()[dayIndex])
+                            {
+                                filteredList.add(current);
+                                break;
+                            }
+                        }
+                    }
+
+                }
+            }
+        });
+
+        strokeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId)
+            {
+                    filteredList = new ArrayList<Instructor>();
+
+
+                if(checkedId == R.id.flyBox)
+                {
+                    for(Instructor current : instructorList)
+                    {
+                        if(current.getStrokes()[0])
+                        {
+                            filteredList.add(current);
+                        }
+                    }
+                }
+                else if(checkedId == R.id.backBox)
+                {
+                    for(Instructor current : instructorList)
+                    {
+                        if(current.getStrokes()[1])
+                        {
+                            filteredList.add(current);
+                        }
+                    }
+                }
+                else if(checkedId == R.id.breastBox)
+                {
+                    for(Instructor current : instructorList)
+                    {
+                        if(current.getStrokes()[2])
+                        {
+                            filteredList.add(current);
+                        }
+                    }
+                }
+                else if(checkedId == R.id.freeBox)
+                {
+                    for(Instructor current : instructorList)
+                    {
+                        if(current.getStrokes()[3])
+                        {
+                            filteredList.add(current);
+                        }
+                    }
+                }
+                else
+                {
+                    filteredList = (ArrayList<Instructor>) instructorList.clone();
+                }
+
+                loadListToView(filteredList);
+            }
+        });
+
+        clearSelectionButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                dayGroup.clearCheck();
+                timeGroup.clearCheck();
+                strokeGroup.clearCheck();
+                loadListToView(instructorList);
+                filteredList = null;
+            }
+        });
+
+
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -220,6 +435,13 @@ public class BiosFragment extends Fragment
         {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+
+    private void applyFilter()
+    {
+
+
     }
 
     @Override

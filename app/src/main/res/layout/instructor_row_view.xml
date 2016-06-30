@@ -27,7 +27,8 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="part of bio"
-            android:id="@+id/instructor_bio_text"/>
+            android:id="@+id/instructor_bio_text"
+            android:maxLines="1"/>
     </LinearLayout>
 
     <ImageView

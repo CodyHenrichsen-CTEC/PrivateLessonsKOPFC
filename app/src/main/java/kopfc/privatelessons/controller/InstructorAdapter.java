@@ -5,9 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import kopfc.privatelessons.model.Instructor;
@@ -20,9 +22,15 @@ public class InstructorAdapter extends ArrayAdapter<Instructor>
 {
     private int resourceId;
     private LayoutInflater inflater;
+    private List<Instructor> allInstructors;
+    private List<Instructor> filteredInstructors;
+
     public InstructorAdapter(Context context, int textViewResourceId, List<Instructor> objects)
     {
         super(context,  textViewResourceId, objects);
+        allInstructors = objects;
+        filteredInstructors = objects;
+
         resourceId = textViewResourceId;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -33,6 +41,9 @@ public class InstructorAdapter extends ArrayAdapter<Instructor>
         public TextView bioView;
         public ImageView instructorImage;
     }
+
+
+
 
     private void loadImage()
     {
