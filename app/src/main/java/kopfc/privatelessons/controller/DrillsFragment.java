@@ -96,10 +96,8 @@ public class DrillsFragment extends Fragment
         drillsView.loadUrl(derp);
 
         Resources systemResources = getResources();
-        float fontSize = systemResources.getDimension(R.dimen.textSize);
 
-        drillsView.getSettings().setDefaultFontSize((int) fontSize);
-
+        drillsView.getSettings().setTextZoom(300);
         drillsView.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent event) {

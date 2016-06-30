@@ -74,7 +74,7 @@ public class InstructorAdapter extends ArrayAdapter<Instructor>
 
 
             Instructor current = getItem(position);
-            String name = current.getName().replaceAll("\\s","");
+            String name = current.getName().replaceAll("\\s","").toLowerCase();
 
             currentHolder = new InstructorHolder();
             currentHolder.nameView = (TextView) instructorRowItem.findViewById(R.id.instructor_name_text);
@@ -84,6 +84,7 @@ public class InstructorAdapter extends ArrayAdapter<Instructor>
             currentHolder.nameView.setText(current.getName());
             currentHolder.bioView.setText(current.getBiography());
             int instructorImageResource = getContext().getResources().getIdentifier(name, "drawable", getContext().getPackageName());
+
             if(instructorImageResource != 0)
             {
                 currentHolder.instructorImage.setImageResource(instructorImageResource);

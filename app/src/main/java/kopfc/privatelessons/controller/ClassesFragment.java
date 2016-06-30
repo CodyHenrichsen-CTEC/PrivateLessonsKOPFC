@@ -96,7 +96,7 @@ public class ClassesFragment extends Fragment
         float fontSize = systemResources.getDimension(R.dimen.textSize);
 
         classesView.getSettings().setDefaultFontSize((int) fontSize);
-
+        classesView.getSettings().setTextZoom(200);
         classesView.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent event) {

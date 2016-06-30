@@ -269,7 +269,7 @@ public class BiosFragment extends Fragment
                 }
                 else
                 {
-                    bioView.setMaxLines(5);
+                    bioView.setMaxLines(10);
                 }
                 clicked = !clicked;
 
